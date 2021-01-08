@@ -19,6 +19,7 @@ class UsersViewSet(ModelViewSet):
     serializer_class = UserSerializer
 
     def get_permissions(self):
+
         if self.action == "list":
             permission_classes = [IsAdminUser]
         elif (
@@ -54,13 +55,13 @@ class UsersViewSet(ModelViewSet):
 
     @favs.mapping.put
     def toggle_favs(self, request, pk):
-        pk = request.data.get('pk', None)
+        pk = request.data.get("pk", None)
         user = self.get_object()
         if pk is not None:
             try:
                 room = Room.objects.get(pk=pk)
                 if room in user.favs.all():
-                    user.favs.add(room)
+                    user.favs.remove(room)
                 else:
                     user.favs.add(room)
                 return Response()
